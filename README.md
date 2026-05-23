@@ -79,7 +79,7 @@ plots/                                # default trend plots and boxplots
 
 ## Example Usage
 
-You can run `pipeline.ipynb` for the result of the method `FixedTerm_OLS` or `FixedTerm_OLS_binaryAdj`. The pipeline scripts are also provided.
+You can run `pipeline.ipynb` for the result of the method `FixedTerm_OLS` or `FixedTerm_OLS_binaryAdj`. The pipeline scripts are also provided in `cell_pipeline/`.
 
 And then run the evaluation part `evaluate.ipynb` step by step.
 
