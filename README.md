@@ -80,6 +80,10 @@ plots/                                # default trend plots and boxplots
 
 ## Example Usage
 
+You can run `pipeline.ipynb` step by step for the result of the method `FixedTerm_OLS` or `FixedTerm_OLS_binaryAdj`.
+
+And the run the evaluation part.
+
 ```bash
 python evaluate.py \
   --source-cell-data CellData/ \
