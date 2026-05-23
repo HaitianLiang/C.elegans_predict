@@ -48,7 +48,6 @@ The evaluation script compares:
 
 - `FixedTerm_OLS`: original FixedTerm model using contact strengths from `Gi.csv`.
 - `FixedTerm_OLS_binaryAdj`: same FixedTerm library, but every nonzero contact is treated as weight `1`.
-- `FixedTerm_OLS_binaryAdj_context`: binary-adjacency FixedTerm model plus same-CSV/same-T cell-context features.
 - `MotherCopyBaseline`: copies mother coordinates for mean-position targets and uses training means for split-size targets.
 - `LinearRegression`: direct six-target regression from same-time cell context.
 - `RandomForest`: small-data conservative Random Forest configuration.
@@ -80,31 +79,16 @@ plots/                                # default trend plots and boxplots
 
 ## Example Usage
 
-You can run `pipeline.ipynb` step by step for the result of the method `FixedTerm_OLS` or `FixedTerm_OLS_binaryAdj`.
+You can run `pipeline.ipynb` for the result of the method `FixedTerm_OLS` or `FixedTerm_OLS_binaryAdj`.
 
-And the run the evaluation part.
-
-```bash
-python evaluate.py \
-  --source-cell-data CellData/ \
-  --source-adjacency adj/ \
-  --regression-equations ./regression_equations.csv \
-  --eval-cell-data T3_8_12=CellData_812/ \
-  --eval-adjacency T3_8_12=adj/ \
-  --eval-cell-data T4_12_14=CellData_1214/ \
-  --eval-adjacency T4_12_14=adj/ \
-  --output-dir raw_cell_feature_fixed_terms_eval \
-  --train-sizes 10-88 \
-  --n-repeats 1 \
-  --mlp-max-iter 120 \
-  --random-state 42
-```
-Or you can run `evaluate.ipynb` step by step.
+And then run the evaluation part `evaluate.ipynb` step by step.
 
 
 ## Custom Plotting
 
-After evaluation, `newplot.py` can be used to redraw figures from saved CSV outputs. It supports:
+After evaluation, you can see the figures from saved CSV outputs. 
+
+It supports:
 
 - configurable train-size range;
 - selectable model list;
@@ -112,19 +96,6 @@ After evaluation, `newplot.py` can be used to redraw figures from saved CSV outp
 - boxplots with overlaid scatter points;
 - `split_vector_error` line plots and boxplots.
 
-Edit the following fields near the top of `newplot.py`:
-
-```python
-RESULT_DIR = Path("raw_cell_feature_fixed_terms_eval")
-PLOT_TRAIN_SIZE_MIN = 10
-PLOT_TRAIN_SIZE_MAX = 88
-SELECTED_MODELS = [
-    "FixedTerm_OLS_binaryAdj",
-    "MotherCopyBaseline",
-    "LinearRegression",
-    "RandomForest_default",
-    "MLP",
-]
 ```
 
 ## Notes
