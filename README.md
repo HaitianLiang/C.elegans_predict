@@ -81,7 +81,7 @@ plots/                                # default trend plots and boxplots
 ## Example Usage
 
 ```bash
-python evaluate_raw_cell_feature_fixed_terms_v23_train10_88_boxplots.py \
+python evaluate.py \
   --source-cell-data CellData/ \
   --source-adjacency adj/ \
   --regression-equations ./regression_equations.csv \
@@ -95,6 +95,8 @@ python evaluate_raw_cell_feature_fixed_terms_v23_train10_88_boxplots.py \
   --mlp-max-iter 120 \
   --random-state 42
 ```
+Or you can run `evaluate.ipynb` step by step.
+
 
 ## Custom Plotting
 
