@@ -1,0 +1,193 @@
+raw_stage,agg_stage,target,target_index,rank,feature,alias,coef,category,interpretation
+4_6_7_8,4_to_8,x_mean,1,1,mother_x,m_x,1.032495194766181,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+4_6_7_8,4_to_8,x_mean,1,2,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.0165302005732624,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+4_6_7_8,4_to_8,x_mean,1,3,mother_x_adj_xj_pow3,\langle x_j^3\rangle_N,0.0013939786066685,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+4_6_7_8,4_to_8,x_mean,1,4,mother_x_adj_xi_xj2,\langle m_xx_j^2\rangle_N,-0.0034509827184833,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+4_6_7_8,4_to_8,x_half,2,1,mother_z_z,m_z^2,-0.0018542468256687,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+4_6_7_8,4_to_8,x_half,2,2,mother_x_adj_xj_minus_xi_pow2,\langle (x_j-m_x)^2\rangle_N,0.005205667038111,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+4_6_7_8,4_to_8,x_half,2,3,mother_y_adj_xj_minus_xi_pow2,\langle (y_j-m_y)^2\rangle_N,0.1088563038850383,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+4_6_7_8,4_to_8,x_half,2,4,mother_x_adj_xj,\langle x_j\rangle_N,-0.4137383750550382,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+4_6_7_8,4_to_8,x_half,2,5,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.012048284115055,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+4_6_7_8,4_to_8,x_half,2,6,mother_2d_couple_xz_xi2_xj,m_x^2m_z,0.0010953676677693,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+4_6_7_8,4_to_8,x_half,2,7,mother_y_adj_xi_xj_pow3,\langle (m_yy_j)^3\rangle_N,0.0029965752469176,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+4_6_7_8,4_to_8,y_mean,3,1,mother_x_adj_xj,\langle x_j\rangle_N,-0.2260290964031587,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+4_6_7_8,4_to_8,y_mean,3,2,mother_x,m_x,-0.1075044023155744,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+4_6_7_8,4_to_8,y_mean,3,3,mother_z,m_z,-0.0899154081821391,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+4_6_7_8,4_to_8,y_mean,3,4,mother_2d_couple_yz_xi_xj,m_ym_z,-0.0465757839199507,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+4_6_7_8,4_to_8,y_mean,3,5,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,-0.0010754876404917,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+4_6_7_8,4_to_8,y_half,4,1,mother_x_adj_xj_minus_xi_pow2,\langle (x_j-m_x)^2\rangle_N,0.0097942954144152,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+4_6_7_8,4_to_8,y_half,4,2,mother_x_adj_xi_xj2,\langle m_xx_j^2\rangle_N,0.0015749514353092,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+4_6_7_8,4_to_8,y_half,4,3,mother_2d_couple_xz_xi_xj2,m_xm_z^2,0.0021473681434549,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+4_6_7_8,4_to_8,y_half,4,4,mother_x_adj_xj_pow3,\langle x_j^3\rangle_N,0.000943781255146,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+4_6_7_8,4_to_8,y_half,4,5,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.0086926235579342,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+4_6_7_8,4_to_8,y_half,4,6,mother_x_adj_xi_xj,\langle m_xx_j\rangle_N,0.0505619857788652,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+4_6_7_8,4_to_8,z_mean,5,1,mother_z,m_z,1.2201309344858728,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+4_6_7_8,4_to_8,z_mean,5,2,mother_y_adj_xj_minus_xi_pow2,\langle (y_j-m_y)^2\rangle_N,-0.1380774710552531,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+4_6_7_8,4_to_8,z_mean,5,3,mother_2d_couple_xz_xi_xj2,m_xm_z^2,0.0065628508018053,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+4_6_7_8,4_to_8,z_mean,5,4,mother_z_adj_xi2_xj,\langle m_z^2z_j\rangle_N,0.0141017795257649,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+4_6_7_8,4_to_8,z_mean,5,5,mother_2d_couple_xy_xj_minus_xi_pow2,(m_y-m_x)^2,0.0029517200995131,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+4_6_7_8,4_to_8,z_half,6,1,mother_x_x,m_x^2,0.0095557750372692,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+4_6_7_8,4_to_8,z_half,6,2,mother_x_adj_xi_xj,\langle m_xx_j\rangle_N,0.0219242621743549,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+4_6_7_8,4_to_8,z_half,6,3,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.0030404073134117,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+4_6_7_8,4_to_8,z_half,6,4,mother_2d_couple_xz_xi_xj,m_xm_z,-0.0162232361991793,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+4_6_7_8,4_to_8,z_half,6,5,mother_x_adj_xi_xj_pow2,\langle (m_xx_j)^2\rangle_N,0.0001794032553397,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+4_6_7_8,4_to_8,z_half,6,6,mother_3d_couple_prod_sq_xy2z,(m_xm_y^2m_z)^2,2.072208598805553e-05,mother 3D coupling,High-order 3D positional coupling; nonlinear correction.
+4_6_7_8,4_to_8,z_half,6,7,mother_y_adj_xj_pow3,\langle y_j^3\rangle_N,0.0036149353261864,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+8_to_12,8_to_12,x_mean,1,1,mother_x,m_x,0.6285385941064514,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+8_to_12,8_to_12,x_mean,1,2,mother_y_adj_xj,\langle y_j\rangle_N,-0.58936907910065,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+8_to_12,8_to_12,x_mean,1,3,mother_x_adj_xj,\langle x_j\rangle_N,1.0880318022369937,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+8_to_12,8_to_12,x_mean,1,4,mother_z_adj_xi_xj2,\langle m_zz_j^2\rangle_N,0.0031943312068878,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+8_to_12,8_to_12,x_mean,1,5,mother_2d_couple_xz_xi_xj,m_xm_z,-0.0039575160931105,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+8_to_12,8_to_12,x_half,2,1,mother_y_adj_xj_minus_xi_pow2,\langle (y_j-m_y)^2\rangle_N,0.1204998011196727,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+8_to_12,8_to_12,x_half,2,2,mother_z_adj_xj,\langle z_j\rangle_N,-0.0625243910873468,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+8_to_12,8_to_12,x_half,2,3,mother_y_y,m_y^2,-0.1014905899165891,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+8_to_12,8_to_12,x_half,2,4,mother_z_adj_xi_xj2,\langle m_zz_j^2\rangle_N,-0.0046220339923717,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+8_to_12,8_to_12,x_half,2,5,mother_x_adj_xj_minus_xi_pow2,\langle (x_j-m_x)^2\rangle_N,0.0095122203799511,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+8_to_12,8_to_12,x_half,2,6,mother_y_adj_xj_pow3,\langle y_j^3\rangle_N,-0.0109827030985554,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+8_to_12,8_to_12,y_mean,3,1,mother_y,m_y,0.9954440269082232,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+8_to_12,8_to_12,y_mean,3,2,mother_z_adj_xi_xj2,\langle m_zz_j^2\rangle_N,0.0128208116544241,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+8_to_12,8_to_12,y_mean,3,3,mother_z_adj_xi2_xj,\langle m_z^2z_j\rangle_N,0.0043670485433503,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+8_to_12,8_to_12,y_mean,3,4,mother_y_adj_xi_xj,\langle m_yy_j\rangle_N,0.2351430162710751,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+8_to_12,8_to_12,y_mean,3,5,mother_2d_couple_yz_xi_xj2,m_ym_z^2,-0.0107678076772797,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+8_to_12,8_to_12,y_mean,3,6,mother_x_adj_xj_pow3,\langle x_j^3\rangle_N,0.0007859420164121,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+8_to_12,8_to_12,y_mean,3,7,mother_x_x,m_x^2,0.0026225454096711,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+8_to_12,8_to_12,y_mean,3,8,mother_2d_couple_xy_xi2_xj,m_x^2m_y,-0.0020732369077332,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+8_to_12,8_to_12,y_half,4,1,mother_2d_couple_yz_xj_minus_xi_pow2,(m_z-m_y)^2,0.0074933744865249,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+8_to_12,8_to_12,y_half,4,2,mother_x_adj_xj,\langle x_j\rangle_N,-0.013977010193882,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+8_to_12,8_to_12,y_half,4,3,mother_2d_couple_yz_xi_xj,m_ym_z,-0.014959989069434,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+8_to_12,8_to_12,y_half,4,4,mother_z,m_z,0.1809526824073749,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+8_to_12,8_to_12,y_half,4,5,mother_x_adj_xj_pow3,\langle x_j^3\rangle_N,-0.001037740844351,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+8_to_12,8_to_12,y_half,4,6,mother_3d_couple_prod_xyz,m_xm_ym_z,-0.0014376585108255,mother 3D coupling,High-order 3D positional coupling; nonlinear correction.
+8_to_12,8_to_12,y_half,4,7,mother_z_adj_xi2_xj,\langle m_z^2z_j\rangle_N,0.0069463300135724,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+8_to_12,8_to_12,y_half,4,8,mother_z_adj_xi_xj_pow2,\langle (m_zz_j)^2\rangle_N,0.0003505853522072,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+8_to_12,8_to_12,z_mean,5,1,mother_z_adj_xj_minus_xi,\langle z_j-m_z\rangle_N,0.163273062211201,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+8_to_12,8_to_12,z_mean,5,2,mother_2d_couple_yz_xj_minus_xi_pow2,(m_z-m_y)^2,0.019328157589994,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+8_to_12,8_to_12,z_mean,5,3,mother_x_adj_xj_minus_xi,\langle x_j-m_x\rangle_N,-0.1125897818079436,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+8_to_12,8_to_12,z_mean,5,4,mother_x_adj_xj_pow3,\langle x_j^3\rangle_N,-0.0007720615468571,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+8_to_12,8_to_12,z_mean,5,5,mother_z_z_z,m_z^3,-0.0051587707257755,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+8_to_12,8_to_12,z_mean,5,6,mother_2d_couple_xz_xi2_xj,m_x^2m_z,-0.0022017666357379,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+8_to_12,8_to_12,z_mean,5,7,mother_z,m_z,1.2700554203289018,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+8_to_12,8_to_12,z_mean,5,8,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.0090164344969689,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+8_to_12,8_to_12,z_half,6,1,mother_z_adj_xj_pow2,\langle z_j^2\rangle_N,0.0554651431733221,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+8_to_12,8_to_12,z_half,6,2,mother_2d_couple_xz_xi_xj,m_xm_z,0.0202315956380134,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+8_to_12,8_to_12,z_half,6,3,mother_x_x,m_x^2,0.0072450262558922,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+8_to_12,8_to_12,z_half,6,4,mother_2d_couple_yz_xi_xj,m_ym_z,0.015715698780553,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+8_to_12,8_to_12,z_half,6,5,mother_2d_couple_xy_xj_minus_xi_pow2,(m_y-m_x)^2,-0.0030914198447223,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+8_to_12,8_to_12,z_half,6,6,mother_z_adj_xj_minus_xi_pow2,\langle (z_j-m_z)^2\rangle_N,0.0098499596110154,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+8_to_12,8_to_12,z_half,6,7,mother_z_adj_xi2_xj,\langle m_z^2z_j\rangle_N,0.0106904744887108,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+8_to_12,8_to_12,z_half,6,8,mother_2d_couple_xz_xi2_xj,m_x^2m_z,0.0009510622668049,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+12_to_14,12_to_15,x_mean,1,1,mother_x_adj_xj_pow3,\langle x_j^3\rangle_N,0.0003709094496197,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,x_mean,1,2,mother_x,m_x,1.4369392956687177,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+12_to_14,12_to_15,x_mean,1,3,mother_x_x_x,m_x^3,-0.008915248194999,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+12_to_14,12_to_15,x_mean,1,4,mother_2d_couple_xy_xj_minus_xi_pow2,(m_y-m_x)^2,0.0275604911186123,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+12_to_14,12_to_15,x_mean,1,5,mother_3d_couple_prod_xyz,m_xm_ym_z,-0.0048306409513165,mother 3D coupling,High-order 3D positional coupling; nonlinear correction.
+12_to_14,12_to_15,x_mean,1,6,mother_y_adj_xj_pow3,\langle y_j^3\rangle_N,-0.0055693978819159,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,x_mean,1,7,mother_z_adj_xj_pow2,\langle z_j^2\rangle_N,-0.0186417636032839,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,x_mean,1,8,mother_2d_couple_xy_xi_xj2,m_xm_y^2,0.0075545389070003,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+12_to_14,12_to_15,x_half,2,1,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.0272936004111799,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,x_half,2,2,mother_y_adj_xj_minus_xi_pow2,\langle (y_j-m_y)^2\rangle_N,0.0312019603613326,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+12_to_14,12_to_15,x_half,2,3,mother_3d_couple_prod_sq_xyz2,(m_xm_ym_z^2)^2,-1.7892152127164193e-07,mother 3D coupling,High-order 3D positional coupling; nonlinear correction.
+12_to_14,12_to_15,x_half,2,4,mother_y_adj_xj_pow3,\langle y_j^3\rangle_N,0.0028560943288831,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,y_mean,3,1,mother_y_adj_xi_xj2,\langle m_yy_j^2\rangle_N,0.011338295715444,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+12_to_14,12_to_15,y_mean,3,2,mother_2d_couple_xy_xi_xj,m_xm_y,-0.0110558849816697,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+12_to_14,12_to_15,y_mean,3,3,mother_z_adj_xj_pow2,\langle z_j^2\rangle_N,0.0475858202968249,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,y_mean,3,4,mother_x_adj_xj_pow3,\langle x_j^3\rangle_N,-0.0004156961393785,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,y_half,4,1,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.007086518673422,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,y_half,4,2,mother_x,m_x,0.0355351405917135,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+12_to_14,12_to_15,y_half,4,3,mother_y_adj_xj_pow3,\langle y_j^3\rangle_N,0.0064822439943751,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,y_half,4,4,mother_z_adj_xi_xj_pow3,\langle (m_zz_j)^3\rangle_N,-2.666509874539459e-06,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+12_to_14,12_to_15,y_half,4,5,mother_y_adj_xj,\langle y_j\rangle_N,-0.2819888636256597,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,z_mean,5,1,mother_z,m_z,0.9570106082771344,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+12_to_14,12_to_15,z_mean,5,2,mother_x_adj_xi_xj,\langle m_xx_j\rangle_N,-0.0367613136308444,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+12_to_14,12_to_15,z_mean,5,3,mother_z_z,m_z^2,0.0427444965507032,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+12_to_14,12_to_15,z_mean,5,4,mother_2d_couple_xz_xi_xj,m_xm_z,0.0280187654382708,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+12_to_14,12_to_15,z_mean,5,5,mother_2d_couple_xz_xi_xj_pow3,(m_xm_z)^3,-3.0565758708936e-06,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+12_to_14,12_to_15,z_mean,5,6,mother_y_adj_xj_pow2,\langle y_j^2\rangle_N,-0.0636580513818138,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,z_mean,5,7,mother_y_adj_xi2_xj,\langle m_y^2y_j\rangle_N,-0.045589318367812,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+12_to_14,12_to_15,z_half,6,1,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.0086436856968345,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,z_half,6,2,mother_2d_couple_xz_xi_xj,m_xm_z,-0.0046850647215161,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+12_to_14,12_to_15,z_half,6,3,mother_z_adj_xj_pow2,\langle z_j^2\rangle_N,0.0052168450674805,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,z_half,6,4,mother_y_adj_xj_pow3,\langle y_j^3\rangle_N,0.0023398979511214,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,z_half,6,5,mother_z_adj_xj_pow3,\langle z_j^3\rangle_N,0.0026762400897693,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+12_to_14,12_to_15,z_half,6,6,mother_2d_couple_yz_xi_xj_pow2,(m_ym_z)^2,-0.0008162523566177,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+12_to_14,12_to_15,z_half,6,7,mother_y_y,m_y^2,0.0342555948466803,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+12_to_14,12_to_15,z_half,6,8,mother_z_adj_xj,\langle z_j\rangle_N,-0.2182051664866238,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,x_mean,1,1,mother_x_adj_xj_minus_xi_pow2,\langle (x_j-m_x)^2\rangle_N,-0.0897103751234794,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+14_to_15,12_to_15,x_mean,1,2,mother_x_adj_xj,\langle x_j\rangle_N,-1.377251122782558,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,x_mean,1,3,mother_y_adj_xj_pow2,\langle y_j^2\rangle_N,0.0512308322434589,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,x_mean,1,4,mother_x,m_x,1.239537113544935,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+14_to_15,12_to_15,x_mean,1,5,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.1174966847978582,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,x_half,2,1,mother_z_adj_xj_pow2,\langle z_j^2\rangle_N,0.0461943383495323,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,x_half,2,2,mother_y,m_y,-0.2092619213704253,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+14_to_15,12_to_15,x_half,2,3,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.0091581605015611,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,x_half,2,4,mother_z_adj_xj,\langle z_j\rangle_N,0.5527385785797022,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,x_half,2,5,mother_z,m_z,0.3645351139993748,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+14_to_15,12_to_15,x_half,2,6,mother_z_adj_xi_xj_pow3,\langle (m_zz_j)^3\rangle_N,-6.660548748424288e-05,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+14_to_15,12_to_15,x_half,2,7,mother_z_adj_xj_pow3,\langle z_j^3\rangle_N,0.0025553309163621,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,y_mean,3,1,mother_z_adj_xj_pow2,\langle z_j^2\rangle_N,-0.0215252261196496,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,y_mean,3,2,mother_y,m_y,0.2446902233875037,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+14_to_15,12_to_15,y_mean,3,3,mother_y_adj_xj_pow2,\langle y_j^2\rangle_N,-0.0695821738295173,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,y_mean,3,4,mother_y_adj_xj_pow3,\langle y_j^3\rangle_N,0.0078470701874668,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,y_mean,3,5,mother_x_adj_xj,\langle x_j\rangle_N,-0.445437112265118,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,y_mean,3,6,mother_2d_couple_xz_xj_minus_xi_pow2,(m_z-m_x)^2,-0.0111640630271276,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+14_to_15,12_to_15,y_half,4,1,mother_y_adj_xj_pow2,\langle y_j^2\rangle_N,0.0328503424657663,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,z_mean,5,1,mother_z_adj_xj_minus_xi_pow2,\langle (z_j-m_z)^2\rangle_N,0.0235675464444067,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+14_to_15,12_to_15,z_mean,5,2,mother_2d_couple_yz_xj_minus_xi_pow2,(m_z-m_y)^2,0.0098583135519977,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+14_to_15,12_to_15,z_mean,5,3,mother_y_adj_xj_pow3,\langle y_j^3\rangle_N,0.0171686039592907,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,z_mean,5,4,mother_y_adj_xi2_xj,\langle m_y^2y_j\rangle_N,-0.0770498030263306,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+14_to_15,12_to_15,z_mean,5,5,mother_z_adj_xi_xj_pow3,\langle (m_zz_j)^3\rangle_N,-4.840071580878537e-05,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+14_to_15,12_to_15,z_mean,5,6,mother_z_adj_xi_xj,\langle m_zz_j\rangle_N,0.1356688122395845,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+14_to_15,12_to_15,z_mean,5,7,mother_z,m_z,0.2851112724495888,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+14_to_15,12_to_15,z_half,6,1,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.0333463119655585,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+14_to_15,12_to_15,z_half,6,2,mother_2d_couple_xy_xi_xj_pow2,(m_xm_y)^2,0.000618953785972,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+14_to_15,12_to_15,z_half,6,3,mother_z_adj_xj_minus_xi_pow3,\langle (z_j-m_z)^3\rangle_N,-0.0032598743280981,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+14_to_15,12_to_15,z_half,6,4,mother_z,m_z,-1.0407579610027688,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+14_to_15,12_to_15,z_half,6,5,mother_2d_couple_xz_xi_xj_pow2,(m_xm_z)^2,-0.0054524481956566,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+14_to_15,12_to_15,z_half,6,6,mother_2d_couple_xz_xi_xj2,m_xm_z^2,0.0516816363115097,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+14_to_15,12_to_15,z_half,6,7,mother_x_x_x,m_x^3,0.0044771584514306,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+14_to_15,12_to_15,z_half,6,8,mother_x,m_x,-0.3774427733783825,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+15_to_24,15_to_24,x_mean,1,1,mother_x,m_x,0.6592637396904913,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+15_to_24,15_to_24,x_mean,1,2,mother_2d_couple_xy_xi_xj,m_xm_y,0.004968405050961,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,x_mean,1,3,mother_y_adj_xj_minus_xi_pow3,\langle (y_j-m_y)^3\rangle_N,0.001425032278427,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+15_to_24,15_to_24,x_mean,1,4,mother_y_adj_xj_pow2,\langle y_j^2\rangle_N,0.0649924034849021,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+15_to_24,15_to_24,x_mean,1,5,mother_z_adj_xj,\langle z_j\rangle_N,-0.1717118569831447,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+15_to_24,15_to_24,x_mean,1,6,mother_z_adj_xi_xj,\langle m_zz_j\rangle_N,0.0083023159158116,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+15_to_24,15_to_24,x_mean,1,7,mother_x_adj_xj,\langle x_j\rangle_N,0.5114827443100182,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+15_to_24,15_to_24,x_mean,1,8,mother_2d_couple_xy_xj_minus_xi_pow2,(m_y-m_x)^2,-0.0040491863342432,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,x_half,2,1,mother_y_adj_xj_minus_xi_pow2,\langle (y_j-m_y)^2\rangle_N,0.0287232532473287,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+15_to_24,15_to_24,x_half,2,2,mother_2d_couple_yz_xj_minus_xi_pow2,(m_z-m_y)^2,0.00530859406849,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,x_half,2,3,mother_y_adj_xj_pow2,\langle y_j^2\rangle_N,0.0779217670631075,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+15_to_24,15_to_24,x_half,2,4,mother_2d_couple_xz_xi_xj,m_xm_z,0.004147820956244,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,x_half,2,5,mother_y_adj_xj,\langle y_j\rangle_N,0.2061340930387713,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+15_to_24,15_to_24,x_half,2,6,mother_x_x,m_x^2,-0.0071786450346795,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+15_to_24,15_to_24,x_half,2,7,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.0242071638067732,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+15_to_24,15_to_24,x_half,2,8,mother_2d_couple_xy_xi_xj,m_xm_y,0.0136064843001948,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,y_mean,3,1,mother_y_adj_xj_minus_xi,\langle y_j-m_y\rangle_N,0.4946194277065661,adjacent relative displacement/spread,Neighbor position relative to mother; squared terms measure local spread.
+15_to_24,15_to_24,y_mean,3,2,mother_x_adj_xj,\langle x_j\rangle_N,0.1418029169839057,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+15_to_24,15_to_24,y_mean,3,3,mother_2d_couple_xz_xi_xj,m_xm_z,-0.0105468830679572,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,y_mean,3,4,mother_y,m_y,1.6608340342589445,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+15_to_24,15_to_24,y_mean,3,5,mother_2d_couple_yz_xj_minus_xi_pow2,(m_z-m_y)^2,-0.0079037546550174,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,y_mean,3,6,mother_2d_couple_yz_xi_xj2,m_ym_z^2,-0.0034928628126377,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,y_mean,3,7,mother_2d_couple_xy_xi2_xj,m_x^2m_y,-0.0011594426168485,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,y_mean,3,8,mother_y_adj_xi_xj,\langle m_yy_j\rangle_N,0.1001318618703283,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+15_to_24,15_to_24,y_half,4,1,mother_x_adj_xi_xj,\langle m_xx_j\rangle_N,0.0132931452213995,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+15_to_24,15_to_24,y_half,4,2,mother_z_adj_xi_xj,\langle m_zz_j\rangle_N,0.0211857809339907,mother-neighbor coupling,Coupling between mother position and neighbor position; local geometric embedding.
+15_to_24,15_to_24,y_half,4,3,mother_2d_couple_xz_xi_xj,m_xm_z,0.004057075233083,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,y_half,4,4,mother_2d_couple_xy_xi2_xj,m_x^2m_y,0.0008572442083076,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,y_half,4,5,mother_y_y,m_y^2,-0.0140628818512053,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+15_to_24,15_to_24,y_half,4,6,mother_3d_couple_prod_xyz,m_xm_ym_z,0.0016413929976235,mother 3D coupling,High-order 3D positional coupling; nonlinear correction.
+15_to_24,15_to_24,y_half,4,7,mother_2d_couple_yz_xi_xj,m_ym_z,0.0085393527670111,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,z_mean,5,1,mother_z,m_z,0.7902505386890086,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+15_to_24,15_to_24,z_mean,5,2,mother_2d_couple_xy_xi_xj,m_xm_y,0.01651346385872,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,z_mean,5,3,mother_y,m_y,0.2529843561081277,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+15_to_24,15_to_24,z_mean,5,4,mother_z_adj_xj,\langle z_j\rangle_N,0.7703697352028359,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+15_to_24,15_to_24,z_mean,5,5,mother_y_y,m_y^2,0.0321393457205641,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+15_to_24,15_to_24,z_mean,5,6,mother_2d_couple_yz_xi2_xj,m_y^2m_z,-0.0051086030934332,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,z_mean,5,7,mother_2d_couple_xy_xj_minus_xi_pow2,(m_y-m_x)^2,-0.0022120554298212,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,z_mean,5,8,mother_2d_couple_xz_xi_xj,m_xm_z,-0.004693794266567,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,z_half,6,1,mother_x_adj_xj_pow2,\langle x_j^2\rangle_N,0.0018265266150315,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
+15_to_24,15_to_24,z_half,6,2,mother_2d_couple_xz_xj_minus_xi_pow2,(m_z-m_x)^2,0.0019971274833767,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,z_half,6,3,mother_2d_couple_xz_xi_xj2,m_xm_z^2,0.000496342677854,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,z_half,6,4,mother_x_x_x,m_x^3,9.938734815018636e-05,mother polynomial,Mother-cell coordinate polynomial: global embryo position / low-order positional correction.
+15_to_24,15_to_24,z_half,6,5,mother_2d_couple_xy_xj_minus_xi_pow2,(m_y-m_x)^2,0.0025603271544774,mother 2D coupling,Coupling between two mother-coordinate axes; plane-level geometry.
+15_to_24,15_to_24,z_half,6,6,mother_y_adj_xj_pow2,\langle y_j^2\rangle_N,0.0350019673001447,adjacent raw moment,Contact-weighted neighbor raw moment: local neighbor position or scale.
