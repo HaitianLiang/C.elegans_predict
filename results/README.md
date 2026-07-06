@@ -636,6 +636,3 @@ The target-wise heatmap at $n=40$ includes the RF row with no NA entries.
 
 - [`tables`](tables): exported CSV tables used to build the summaries.
 
-## Citation / reuse note
-
-This README is written to make the modeling logic transparent for open-source presentation. If you reuse the figures or equations, keep the stage-specific nature of the coefficients explicit: the transferable object is the structural dictionary, not a single fixed global equation.
