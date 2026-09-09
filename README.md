@@ -2,12 +2,6 @@
 
 Research code for modeling early *C. elegans* cell-division geometry with **FixedTermOLS**, stage-matched **weighted adjacency**, mother-specific structural dictionaries, residual uncertainty, and continuous 3D division-axis statistics.
 
-## Project status
-
-This repository is a **research-project codebase**. It contains the current method implementation and Markdown documentation used to organize the project.
-
-The numerical results summarized in `docs/RESULTS.md` come from the current project analyses. The public code is written to reproduce the documented workflow, but an **exact archival rerun** additionally requires the original fixed Lasso $\alpha$, the original train/test split seed or split table, and the original biological input files. Those numerical settings are not fully recorded in the two project reports, so the command-line tools require the Lasso $\alpha$ to be supplied explicitly.
-
 ## Scope
 
 The repository keeps two related analyses separate because they answer different statistical questions.
