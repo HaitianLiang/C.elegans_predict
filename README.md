@@ -34,8 +34,6 @@ The three `mean` targets describe the daughter-pair center. The three `half` tar
 
 ## Method overview
 
-The implemented workflow is deliberately explicit and sequential:
-
 1. reconstruct mother $\rightarrow$ two-daughter division events from CellData coordinate tables;
 2. match each event to the weighted adjacency matrix for the mother-cell stage;
 3. construct the FixedTerm candidate library from mother-coordinate polynomial terms, weighted neighbor moments, weighted relative displacements, and mother-neighbor couplings;
@@ -69,17 +67,6 @@ The five-stage pooling analysis gives the same qualitative conclusion: a shared 
 WAEF is retained as a complementary low-dimensional effective-field model. It can approach FixedTermOLS within several stages, but its cross-stage effective-field direction is not stable enough to replace the explicit FixedTerm equations.
 
 
-## Installation
-
-Python 3.10 or later is recommended.
-
-
-For local tests:
-
-```bash
-pip install -e ".[dev]"
-pytest
-```
 
 ## Running the biological analysis
 
