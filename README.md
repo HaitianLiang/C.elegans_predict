@@ -1,340 +1,483 @@
-# Cell Division Geometry Prediction Pipeline
+# Interpretable *C. elegans* Cell-Division Geometry
 
-This repository contains an interpretable small-data regression pipeline for predicting early embryonic daughter-cell positions from mother-cell and neighborhood geometry.
+A reproducible reference implementation for modeling early *C. elegans* daughter-cell geometry with **FixedTermOLS**, **weighted cell-contact adjacency**, **lineage-level structural dictionaries**, **heteroscedastic heavy-tailed residuals**, and **continuous 3D division-axis statistics**.
 
-The main idea is that **FixedTermOLS learns a reusable structural dictionary**, while the numerical coefficients are **stage-specific** and should be calibrated for each developmental stage. The repository contains both the original notebooks and a complete result package under `results/`.
+This repository organizes two complementary resolutions of the same project:
 
----
+1. **Stage-level structural dynamics** — asks which geometric structures can be reused across developmental stages and whether their numerical coefficients transfer.
+2. **Mother-specific division geometry** — fits one model per mother-division type, evaluates it on held-out embryos, and separates typical geometry from embryo-to-embryo variation.
 
-## Repository layout
+The central empirical message is:
 
-```text
-.
-├── cell_pipeline/              # Pipeline scripts and helper code
-├── results/                    # Main result package: reports, figures, tables, equations
-│   ├── README.md               # Full English result overview
-│   ├── assets/figures/         # Main figures used in the report
-│   ├── docs/                   # Detailed explanations and equation documents
-│   └── tables/                 # Exported metrics, equations, paths, and audit tables
-├── README.md                   # This project-level overview
-├── pipeline.ipynb              # Feature construction, Lasso screening, FixedTermOLS fitting
-└── evaluate.ipynb              # Few-shot and baseline evaluation workflow
+> **Geometric structure is more reusable than numerical coefficients.**  
+> Mean targets mainly describe center transport, while half targets are more strongly modulated by weighted neighborhood geometry. At the finer mother-specific level, the model recovers stable dominant division axes and division-length trends, while residual modeling is still needed for individual-embryo variability.
+
+```mermaid
+flowchart LR
+    A[CellData 3D coordinates] --> C[Mother-division event reconstruction]
+    B[Stage-matched weighted adjacency] --> D[Geometric feature library]
+    C --> D
+    D --> E[Fixed-alpha Lasso screening]
+    E --> F[WAIC / R2 greedy ranking]
+    F --> G[Final-WAIC FixedTermOLS equations]
+    F --> H[Top-k structural dictionaries]
+    G --> I[Mother-specific held-out prediction]
+    G --> J[Stage-level transfer and pooling]
+    I --> K[Student-t residual layer]
+    I --> L[Continuous 3D division-axis analysis]
+    J --> M[WAEF / RF structural audits]
 ```
 
-Most detailed results are documented in `results/`. In particular:
+---
 
-- [`results/README.md`](results/README.md): full result overview.
-- [`results/docs/all_fixedterm_equations.md`](results/docs/all_fixedterm_equations.md): all stage-specific FixedTermOLS equations.
-- [`results/docs/key_results_tables.md`](results/docs/key_results_tables.md): important result tables.
-- [`results/docs/non_main_explorations.md`](results/docs/non_main_explorations.md): geometry-aware and other non-main explorations.
+## 1. Why this repository has two modeling resolutions
+
+The project evolved from a stage-pooled analysis to a finer mother-specific analysis. These two analyses should **not** be interpreted as duplicate estimates of the same quantity.
+
+| Resolution | Statistical unit | Evaluation style | Main question |
+|---|---|---|---|
+| Stage-level | all division events inside one developmental block | descriptive within-stage fitting + transfer/pooling experiments | What geometric structures are reusable across stages? |
+| Mother-specific | one mother-division type across repeated embryos | independent 70% train / 30% held-out test within each mother | How reproducible is the geometry of a specific division, and what uncertainty remains? |
+
+This distinction matters because the stage-level fits can have high within-stage \(R^2\), whereas the mother-specific half-coordinate held-out problem is substantially harder. The repository therefore keeps both analyses explicit instead of mixing their scores.
 
 ---
 
-## Problem formulation
+## 2. Data representation
 
-For each division event, the model predicts two daughter-cell positions. Instead of predicting the two daughters directly, we use a center/half-vector target representation:
+For daughters
 
-$$
-x_{\mathrm{mean}}=\frac{x_1+x_2}{2},
-\qquad
+\[
+d_1=(x_1,y_1,z_1),\qquad d_2=(x_2,y_2,z_2),
+\]
+
+we use six regression targets:
+
+\[
+x_{\mathrm{mean}}=\frac{x_1+x_2}{2},\qquad
 x_{\mathrm{half}}=\frac{|x_1-x_2|}{2},
-$$
+\]
 
-and analogously for the $y$ and $z$ coordinates. The six targets are
+with the same definitions for \(y\) and \(z\).
+
+Equivalently,
+
+\[
+c=(x_{\mathrm{mean}},y_{\mathrm{mean}},z_{\mathrm{mean}})^\top,
+\qquad
+h=(x_{\mathrm{half}},y_{\mathrm{half}},z_{\mathrm{half}})^\top.
+\]
+
+- `mean` targets describe the daughter-pair center.
+- `half` targets describe coordinate-wise separation amplitude.
+
+The current mother-specific analysis contains **4,056 mother-event observations**, **20 mother-division types**, and **120 final equations** (20 mothers × 6 targets).
+
+---
+
+## 3. Weighted adjacency features
+
+For a mother \(m\) and a stage-matched weighted contact matrix with weights \(w_{mj}\), neighbor summaries use the original continuous weights:
+
+\[
+\langle x_j^k\rangle_w
+=
+\frac{\sum_j w_{mj}x_j^k}{\sum_j w_{mj}},
+\]
+
+\[
+\langle (x_j-x_m)^k\rangle_w
+=
+\frac{\sum_j w_{mj}(x_j-x_m)^k}{\sum_j w_{mj}}.
+\]
+
+The candidate library combines:
+
+- mother coordinates and low-order mother polynomials;
+- weighted neighbor moments;
+- weighted relative-displacement moments;
+- mother-neighbor coupling terms;
+- WAEF primitives: weighted degree, displacement, and local spread.
+
+The main reported analysis **does not binarize the adjacency weights**.
+
+---
+
+## 4. FixedTermOLS
+
+For a mother \(m\), target \(a\), and selected term set \(S_{m,a}\), the final equation is a no-intercept linear model:
+
+\[
+\widehat y_{m,a}
+=
+\sum_{k\in S_{m,a}}\beta_{m,a,k}\phi_k(X).
+\]
+
+Selection is deliberately separated into two roles.
+
+### 4.1 Fixed-\(\alpha\) Lasso screening
+
+The mother-specific pipeline retains a **Top-40** candidate pool. The stage-level analysis uses a **Top-20** candidate pool.
+
+### 4.2 WAIC/\(R^2\) greedy path
+
+From the remaining candidates, each step chooses the term maximizing
+
+\[
+S=
+\frac12
+\frac{\max(\Delta R^2,0)}{\max\Delta R^2+10^{-12}}
++
+\frac12
+\frac{\max(\Delta \mathrm{WAIC},0)}{\max\Delta \mathrm{WAIC}+10^{-12}},
+\]
+
+where positive \(\Delta\mathrm{WAIC}\) means a reduction in WAIC. The mother-specific path is kept to at most 15 terms.
+
+The final prediction equation uses the **training-set WAIC minimum** along the greedy path. The deeper `Top-5/8/12/15` profiles are retained separately for structural-dictionary comparisons.
+
+This avoids forcing all 15 ranked terms into the final predictive model.
+
+---
+
+## 5. Mother-specific analysis: main reported findings
+
+### 5.1 Weighted neighborhood geometry dominates half-equation structure
+
+Across the 60 final half equations:
+
+- weighted-adjacency terms account for about **70.8% of selected terms**;
+- their standardized contribution share, measured by \(|\beta_j|\,\mathrm{SD}(\phi_j)\), is about **62.0%**.
+
+Frequently reused Top-15 structures include weighted second- and third-order neighbor moments, relative displacements, and mother-neighbor couplings.
+
+### 5.2 Lineage signal is a dictionary-level effect, not a single marker
+
+For the union of Top-15 terms across the three half targets:
+
+- mean Jaccard within the same root lineage: **0.3918**;
+- mean Jaccard across different roots: **0.3694**;
+- nominal one-sided permutation \(p\approx 0.0304\);
+- after correction across four profile depths, \(q\approx 0.1216\).
+
+We therefore treat lineage association as **exploratory structural evidence**, not as proof of a stable lineage-specific single term.
+
+### 5.3 Mean equations retain same-axis mother coordinates
+
+The first-order same-axis mother coordinate enters final equations repeatedly:
+
+| Target | Same-axis first-order term in final equation | Mean standardized contribution of that term |
+|---|---:|---:|
+| \(x_{\mathrm{mean}}\) | 60% | 15.77% |
+| \(y_{\mathrm{mean}}\) | 40% | 9.32% |
+| \(z_{\mathrm{mean}}\) | 40% | 8.60% |
+
+This supports the interpretation of `mean` as daughter-pair center transport/calibration, whereas `half` more directly reflects local division geometry.
+
+### 5.4 Heteroscedastic heavy-tailed residual layer
+
+For half-target residuals,
+
+\[
+\epsilon_{i,m,a}=y_{i,m,a}-\widehat y_{i,m,a},
+\qquad
+\sigma_{m,a}=\mathrm{RMSE}_{\mathrm{train}}(m,a),
+\]
+
+the standardized residuals are summarized by the reported model
+
+\[
+\frac{\epsilon_{i,m,a}}{\sigma_{m,a}}
+\sim t_{13}(0,1.08).
+\]
+
+Cross-axis standardized residual correlations are small (approximately 0.026, 0.082, and -0.001), supporting an approximate conditional-independence description for the three half residuals.
+
+### 5.5 Continuous 3D division axes
+
+For each event,
+
+\[
+v=d_1-d_2,\qquad u=\frac{v}{\|v\|},
+\]
+
+where \(u\) and \(-u\) represent the same undirected axis. For a mother with events \(u_i\), define
+
+\[
+M=\frac1n\sum_i u_i u_i^\top,
+\]
+
+and let \(\lambda_1\) be the largest eigenvalue. The axial strength is
+
+\[
+A=\frac{3\lambda_1-1}{2}.
+\]
+
+Reported results:
+
+- median true mother axial strength: **0.955**;
+- held-out event-level true/predicted axis-angle median: **7.44°**;
+- **86.6%** of held-out events are within 15°;
+- median predicted/true division-length ratio: **0.997**;
+- **90.5%** of length ratios fall in \([0.8,1.2]\);
+- mother-level dominant-axis true/predicted angle median: **1.39°**;
+- **19/20** mothers are below 5°.
+
+The predicted axis cloud is more concentrated than the true cloud (median axial strength 0.991 vs 0.955), indicating that the model recovers the typical axis but underestimates embryo-to-embryo directional variation.
+
+---
+
+## 6. Stage-level structural analysis: main reported findings
+
+The stage-level model groups events into five developmental blocks: `4-8`, `8-12`, `12-14`, `14-15`, and `15-24`.
+
+### 6.1 Half-vector structural form
+
+The three half equations can be organized as
+
+\[
+\widehat h^{(s)}
+=
+A_sQ
++
+B_s(x_m,y_m,z_m)\mu
++
+C_s(x_m,y_m,z_m)M
++
+p_s(x_m,y_m,z_m),
+\]
+
+where:
+
+- \(Q\): local spread;
+- \(\mu\): weighted neighborhood center;
+- \(M\): higher-order neighborhood moments;
+- \(p_s\): mother-axis polynomial/coupling terms.
+
+A recurrent conditional motif is \(Q_y\to x_{\mathrm{half}}\), but it is interpreted as a **multivariable geometric motif**, not a universal univariate causal law.
+
+### 6.2 Structure transfers; coefficients do not
+
+Off-diagonal cross-stage summaries reported in the stage-level study are:
+
+| Transfer mode | Mean-target \(R^2\) | Half-target \(R^2\) | All-target \(R^2\) |
+|---|---:|---:|---:|
+| Direct coefficient transfer | -7.263 | -137.451 | -72.357 |
+| Transfer selected structure + destination refit | 0.784 | 0.244 | 0.514 |
+
+This is the strongest evidence for the project-wide conclusion that the reusable object is the **structural dictionary**, while coefficients remain stage dependent.
+
+### 6.3 Pooling stages is useful only with stage-specific coefficients
+
+For all five stages pooled together:
+
+| Model | All-target \(R^2\) | Half-target \(R^2\) | 3D position RMSE |
+|---|---:|---:|---:|
+| Self-stage FixedTerm | 0.897 | 0.811 | 1.631 |
+| Shared coefficients | 0.810 | 0.660 | 2.254 |
+| Shared slopes + stage indicator | 0.859 | 0.750 | 1.980 |
+| **Shared dictionary + stage-specific coefficients** | **0.904** | **0.822** | **1.549** |
+
+The improvement is small in \(R^2\) but consistent, and the 3D position error improves more clearly.
+
+---
+
+## 7. WAEF: a low-dimensional complementary model
+
+`WAEFRegressor` implements a clean reference version of **Weighted-Adjacency Effective-Field Regression**.
+
+The primitive vector is
+
+\[
+(x_m,y_m,z_m,d,\Delta_x,\Delta_y,\Delta_z,Q_x,Q_y,Q_z),
+\]
+
+RMS-standardized without centering and compressed into a unit-norm effective field
+
+\[
+u=\sum_r w_r v_r^*,\qquad \sum_r w_r^2=1.
+\]
+
+The stage-level study used:
+
+- signed linear response for `mean` targets;
+- exponential response for \(x_{\mathrm{half}}\);
+- logistic response for \(y_{\mathrm{half}}\);
+- absolute-field logistic response for \(z_{\mathrm{half}}\).
+
+WAEF can approach FixedTermOLS within several stages, but direct cross-stage transfer is unstable. It is therefore treated as a **compression/interpretation model**, not as a replacement for the explicit FixedTerm equations.
+
+---
+
+## 8. Repository layout
 
 ```text
-x_mean, x_half, y_mean, y_half, z_mean, z_half
+celegans-division-geometry/
+├── README.md
+├── LICENSE
+├── CITATION.md
+├── pyproject.toml
+├── requirements.txt
+├── configs/
+│   ├── mother.yaml
+│   └── stage.yaml
+├── data/
+│   └── README.md
+├── docs/
+│   ├── DATA_FORMAT.md
+│   ├── METHODS.md
+│   ├── REPRODUCIBILITY.md
+│   ├── RESULTS_SUMMARY.md
+│   └── PROJECT_SUMMARY_CN.md
+├── scripts/
+│   ├── convert_adjacency_workbook.py
+│   ├── make_synthetic_demo.py
+│   ├── run_mother_pipeline.py
+│   └── run_stage_pipeline.py
+├── src/celegans_geometry/
+│   ├── adjacency.py
+│   ├── audit.py
+│   ├── axis.py
+│   ├── constants.py
+│   ├── features.py
+│   ├── fixedterm.py
+│   ├── io.py
+│   ├── lineage.py
+│   ├── metrics.py
+│   ├── mother_models.py
+│   ├── residuals.py
+│   ├── stage_models.py
+│   ├── targets.py
+│   └── waef.py
+└── tests/
 ```
 
-This separation is important:
-
-- **mean targets** describe daughter-center transport;
-- **half targets** describe local division scale and separation geometry.
-
 ---
 
-## Main modeling pipeline
+## 9. Installation
 
-### 1. Feature construction
-
-The feature library is built from:
-
-- mother-cell coordinates, such as $m_x,m_y,m_z$;
-- mother-coordinate polynomial terms;
-- neighbor raw moments, such as $\langle x_j\rangle_N$ and $\langle x_j^2\rangle_N$;
-- relative displacement and local-spread terms, such as $\langle (y_j-m_y)^2\rangle_N$;
-- mother-neighbor coupling terms, such as $\langle m_xx_j\rangle_N$.
-
-Here $\langle\cdot\rangle_N$ denotes a neighborhood-weighted average.
-
-### 2. Two-stage selection: Lasso screening then FixedTermOLS reorder
-
-The final equations are not obtained by blindly taking a Lasso order. The selection has two explicit stages.
-
-**Step 1: fixed-alpha Lasso screening.** Lasso screens a Top-20 candidate list from the full feature library. For path visualization, the Lasso $\alpha$ is fixed to avoid artificial oscillations caused by changing regularization strength.
-
-**Step 2: FixedTermOLS reorder.** The Top-20 candidates are reordered using a stepwise FixedTermOLS path, while tracking $R^2$, MSE, and WAIC as terms are added.
-
-<p align="center">
-  <img src="results/assets/figures/lasso_screening_R2_overview_all_stages.png" width="760">
-</p>
-
-<p align="center">
-  <img src="results/assets/figures/lasso_reorder_R2_overview_all_stages.png" width="760">
-</p>
-
-A stage-level example shows the two stages side by side:
-
-<p align="center">
-  <img src="results/assets/figures/lasso_greedy_path_4_6_7_8.png" width="820">
-</p>
-
----
-
-## Final model: FixedTermOLS
-
-For each developmental stage $s$ and each target $t$, the final model is a sparse no-intercept equation:
-
-$$
-\widehat q_t^{(s)}=\sum_{k\in S_{s,t}}\beta_{s,t,k}\phi_k.
-$$
-
-FixedTermOLS is kept as the final model because it is:
-
-- sparse;
-- interpretable;
-- stable in 3D morphology checks;
-- compatible with a structural equation interpretation;
-- useful as a low-data prior in few-shot calibration.
-
-### Stage-wise performance summary
-
-| stage | events | all-target mean $R^2$ | mean-target mean $R^2$ | half-target mean $R^2$ | total selected terms |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| 4-8 | 888 | 0.883 | 0.981 | 0.784 | 34 |
-| 8-12 | 872 | 0.896 | 0.986 | 0.806 | 43 |
-| 12-14 | 436 | 0.546 | 0.936 | 0.156 | 36 |
-| 14-15 | 186 | 0.170 | 0.248 | 0.092 | 34 |
-| 15-24 | 1674 | 0.853 | 0.980 | 0.727 | 45 |
-
-The 14-15 stage is treated as a short transition window rather than as a representative stage: it contains fewer events and only one mother-cell type.
-
----
-
-## 3D morphology checks
-
-The following figures compare true daughter-cell positions with FixedTermOLS predictions. Colors indicate mother-cell type.
-
-<p align="center">
-  <img src="results/assets/figures/fig3d_4_8.png" width="760">
-</p>
-
-<p align="center">
-  <img src="results/assets/figures/fig3d_8_12.png" width="760">
-</p>
-
-<p align="center">
-  <img src="results/assets/figures/fig3d_15_24.png" width="760">
-</p>
-
-Full 3D figures for all stages are available in [`results/assets/figures/`](results/assets/figures/).
-
----
-
-## Structural equation interpretation
-
-Although the six targets are fitted separately, the selected equations can be organized into interpretable structural blocks:
-
-- mother-coordinate polynomial terms;
-- neighbor raw moments;
-- local spread and relative displacement terms;
-- mother-neighbor coupling terms;
-- mother-axis coupling terms.
-
-The most useful structural reformulation is for the three half-coordinate equations. Define
-
-$$
-h=(x_{\mathrm{half}},y_{\mathrm{half}},z_{\mathrm{half}})^\top,
-$$
-
-$$
-Q_\alpha=\langle(\alpha_j-m_\alpha)^2\rangle_N,
-\qquad
-\mu_\alpha=\langle\alpha_j\rangle_N,
-\qquad
-M_{\alpha,k}=\langle\alpha_j^k\rangle_N.
-$$
-
-Then the three half equations can be written as a unified half-vector structure:
-
-$$
-\widehat h^{(s)}=A_sQ+B_s(m)\mu+C_s(m)M+p_s(m).
-$$
-
-This is not a new model. It is a structural reorganization of the already fitted FixedTermOLS equations.
-
-<p align="center">
-  <img src="results/assets/figures/half_block_lines.png" width="760">
-</p>
-
-The half-vector structure suggests a stage-wise transition:
-
-- early stages are more local-neighborhood driven;
-- intermediate stages rely more on neighbor shape moments;
-- later stages show stronger mother-axis coupling.
-
----
-
-## Stable local-spread motif: $Q_y \to x_{\rm half}$
-
-The clearest target-specific local-spread motif is
-
-$$
-Q_y=\langle(y_j-m_y)^2\rangle_N \quad \longrightarrow \quad x_{\mathrm{half}}.
-$$
-
-This should be interpreted as a **conditional local-spread channel**, not as a universal univariate law. It is repeatedly selected by FixedTermOLS in multiple stages, and it is most clearly visible in the non-transition stages.
-
-<p align="center">
-  <img src="results/assets/figures/q_local_spread_heatmap.png" width="760">
-</p>
-
-<p align="center">
-  <img src="results/assets/figures/qy_scatter_allstages.png" width="760">
-</p>
-
----
-
-## Cross-stage transfer: structures transfer better than coefficients
-
-Cross-stage transfer experiments separate two questions.
-
-### Direct coefficient transfer
-
-Apply source-stage coefficients directly to a destination stage:
-
-$$
-\widehat q_t^{(d)}=\sum_{k\in S_s}\beta_{s,t,k}\phi_k^{(d)}.
-$$
-
-This mostly fails off-diagonal, which means that numerical coefficients are not stable across stages.
-
-### Feature transfer with destination refit
-
-Transfer only the selected feature structure, then refit coefficients on the destination stage:
-
-$$
-\widehat q_t^{(d)}=\sum_{k\in S_s}\beta_{d,t,k}^{\mathrm{refit}}\phi_k^{(d)}.
-$$
-
-This works much better. The conclusion is:
-
-> selected structures are partially transferable, but coefficients are stage-specific.
-
-| transfer mode | off-diagonal mean-target $R^2$ | off-diagonal half-target $R^2$ | off-diagonal all-target $R^2$ |
-| --- | ---: | ---: | ---: |
-| direct coefficients | -7.263 | -137.451 | -72.357 |
-| feature transfer + refit | 0.784 | 0.244 | 0.514 |
-
-<p align="center">
-  <img src="results/assets/figures/transfer_direct_all.png" width="740">
-</p>
-
-<p align="center">
-  <img src="results/assets/figures/transfer_refit_all.png" width="740">
-</p>
-
----
-
-## RandomForest feature audit
-
-RandomForest is used only as a nonlinear feature audit, not as the final interpretable model. It checks whether the structural feature blocks selected by FixedTermOLS are also important to a nonlinear model.
-
-<p align="center">
-  <img src="results/assets/figures/rf_block_importance.png" width="740">
-</p>
-
-The audit supports the significance of broad structural blocks such as mother-coordinate polynomial terms, neighbor moments, relative displacement features, and mother-neighbor couplings. However, RF importance is stage-level and multi-output, so target-specific channels such as $Q_y\to x_{\rm half}$ should still be interpreted through FixedTermOLS equations.
-
----
-
-## Few-shot coefficient calibration
-
-The transfer results imply that the selected structure dictionary is more stable than coefficients. We therefore test a few-shot coefficient calibration setting:
-
-1. sample a small number of destination-stage events;
-2. keep a sparse FixedTerm structure fixed;
-3. refit only the coefficients;
-4. evaluate on the remaining events.
-
-The tested training sizes are
-
-$$
-n_{\rm train}\in\{5,10,20,40,80\}.
-$$
-
-The key result is that FixedTerm structures are effective low-data priors. Compared with full-feature linear baselines, sparse FixedTerm structures are much more stable in low-data regimes.
-
-<p align="center">
-  <img src="results/assets/figures/fewshot_global_panel.png" width="860">
-</p>
-
-<p align="center">
-  <img src="results/assets/figures/fewshot_stage_allR2.png" width="860">
-</p>
-
-<p align="center">
-  <img src="results/assets/figures/fewshot_stage_rmse.png" width="860">
-</p>
-
-### Example: global ranking at train size 40
-
-| model | all-target $R^2$ | mean-target $R^2$ | half-target $R^2$ | position RMSE |
-| --- | ---: | ---: | ---: | ---: |
-| Same-stage FixedTerm | 0.590 | 0.776 | 0.405 | 1.782 |
-| RF quick | 0.536 | 0.725 | 0.347 | 2.861 |
-| Union FixedTerm | 0.511 | 0.740 | 0.282 | 1.831 |
-| Prev-stage FixedTerm | 0.465 | 0.748 | 0.181 | 2.195 |
-| 15-24 FixedTerm | 0.445 | 0.712 | 0.178 | 1.946 |
-| Full ridge | 0.341 | 0.610 | 0.072 | 2.057 |
-
----
-
-## Non-main explorations
-
-Several geometry-aware corrections were explored, including joint six-target corrections, direction models, radial calibration, and geometry-weighted variants. These experiments are not used as the final main model because they did not consistently improve both quantitative metrics and 3D morphology.
-
-See [`results/docs/non_main_explorations.md`](results/docs/non_main_explorations.md) for details.
-
----
-
-## How to run
-
-The repository includes two main notebooks.
-
-### 1. Fit the main pipeline
+Python 3.10+ is recommended.
 
 ```bash
-jupyter notebook pipeline.ipynb
+git clone <your-github-url>
+cd celegans-division-geometry
+
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\\Scripts\\activate
+pip install -e .
 ```
 
-This notebook builds features, performs Lasso screening, constructs FixedTermOLS equations, and exports selected terms and metrics.
-
-### 2. Run evaluation and baselines
+For development:
 
 ```bash
-jupyter notebook evaluate.ipynb
+pip install -e ".[dev]"
+pytest
 ```
-
-This notebook evaluates FixedTerm variants and baselines under different train sizes, including RandomForest and other regression baselines.
-
-Scripts and reusable pipeline code are stored under [`cell_pipeline/`](cell_pipeline/).
 
 ---
 
-## Main takeaway
+## 10. Quick smoke test
 
-This project is not just a coordinate prediction benchmark. The main contribution is an interpretable stage-dependent equation framework:
+Generate a synthetic CellData-style early-embryo dataset:
 
-> FixedTermOLS learns a transferable structural dictionary for daughter-cell positioning, while the coefficients are stage-specific and should be calibrated with a small amount of destination-stage data.
+```bash
+python scripts/make_synthetic_demo.py --out data/demo
+```
 
+Run the mother-specific pipeline:
+
+```bash
+python scripts/run_mother_pipeline.py \
+  --cell-data-root data/demo/CellData \
+  --adj-dir data/demo/adj \
+  --out results/demo_mother
+```
+
+This produces canonical events, features, train/test splits, final equations, ranked structural profiles, residual summaries, and continuous-axis metrics.
+
+---
+
+## 11. Running on the biological data
+
+Place the source CellData CSVs (or the original CellData ZIP archives) under a local directory and the weighted adjacency matrices under another directory. The raw loader preserves archive/subdirectory identity, so repeated `CellData_0.csv` names from different source blocks do not collide. See [`data/README.md`](data/README.md) and [`docs/DATA_FORMAT.md`](docs/DATA_FORMAT.md).
+
+If adjacency matrices are delivered in a stage-labeled Excel workbook, convert them first:
+
+```bash
+python scripts/convert_adjacency_workbook.py path/to/adjacency.xlsx --out data/adj
+```
+
+Mother-specific analysis:
+
+```bash
+python scripts/run_mother_pipeline.py \
+  --cell-data-root data/raw \
+  --adj-dir data/adj \
+  --out results/mother \
+  --lasso-alpha <FIXED_ALPHA>
+```
+
+Stage-level analysis:
+
+```bash
+python scripts/run_stage_pipeline.py \
+  --cell-data-root data/raw \
+  --adj-dir data/adj \
+  --out results/stage \
+  --lasso-alpha <FIXED_ALPHA> \
+  --waef \
+  --rf-audit
+```
+
+### Important reproducibility note
+
+The two manuscripts specify a **fixed Lasso \(\alpha\)** but the numeric value is not encoded in the PDFs themselves. The code therefore exposes it as a required scientific configuration choice. The repository default (`0.001`) is a convenient reference value for smoke tests; **do not claim an exact archival reproduction until it is set to the original project value and the original split seed/input files are used**.
+
+---
+
+## 12. Leakage controls
+
+The mother-specific pipeline is organized so that:
+
+- each mother is split independently;
+- the same mother-level train/test split is shared across its six targets;
+- test rows do not participate in Lasso screening, greedy term selection, coefficient fitting, or sign-template fitting;
+- residual scale \(\sigma_{m,a}\) is estimated from training residuals;
+- deeper Top-k structural profiles are not automatically forced into the final predictive equation.
+
+These distinctions are essential for interpreting the held-out results.
+
+---
+
+## 13. Reproducibility status
+
+The project archive previously validated that the weighted-adjacency event-wise analysis produced:
+
+- 4,056/4,056 events matched to adjacency information;
+- 20 mother types;
+- 120 final equations;
+- 1,800 ranked entries (20 × 6 × 15);
+- exact agreement between a fast orthogonal-projection greedy implementation and a refit-every-candidate OLS implementation on selected validation cases.
+
+This GitHub package is a **clean reference implementation reconstructed from the two finalized analysis documents and the validated project conventions**. It is intentionally easier to read and maintain than the historical research notebooks. It should not be described as byte-for-byte identical to every archived notebook.
+
+See [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) for details.
+
+---
+
+## 14. Known limitations
+
+1. Stage-level within-stage scores are descriptive and should not be confused with mother-specific held-out performance.
+2. The weighted adjacency matrices represent stage-level contact structure and do not capture embryo-specific dynamic contact-area fluctuations.
+3. The absolute-half representation loses daughter-label signs; labeled 3D reconstruction therefore needs a training-only mother-specific sign convention.
+4. The model underestimates event-to-event directional dispersion even when the dominant division axis is recovered accurately.
+5. The Top-15 lineage signal is exploratory after multiple-testing correction.
+6. WAEF is useful for compression and interpretation, but its effective-field direction is not a universal cross-stage invariant.
+
+---
+
+## 15. Citation and license
+
+See [`CITATION.md`](CITATION.md). Once the manuscript is public, replace it with the final formal citation.
+
+Code is released under the [MIT License](LICENSE). Biological source data are not included and remain subject to their original data-use terms.
